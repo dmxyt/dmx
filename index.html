@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daemonix - Devfolio Épico Interactivo</title>
+<style>
+    /* --- Fondo logo tenue --- */
+    #backgroundLogo {
+        position: fixed;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 500px;
+        opacity: 0.08;
+        filter: blur(4px) brightness(1.2);
+        pointer-events: none;
+        z-index: 50;
+        animation: bgLogoGlow 3s ease-in-out infinite alternate;
+    }
+    @keyframes bgLogoGlow {
+        0% { opacity:0.06; transform: translate(-50%, -50%) scale(1); }
+        50% { opacity:0.1; transform: translate(-50%, -50%) scale(1.02); }
+        100% { opacity:0.08; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    /* --- Reset general --- */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
+    body { overflow-x:hidden; background:#0a0a0a; color:#fff; }
+
+    /* --- Intro Sobrenatural --- */
+    #intro { position: fixed; top:0; left:0; width:100%; height:100%; background:#0a0a0a; display:flex; justify-content:center; align-items:center; flex-direction:column; z-index:100; overflow:hidden; }
+    #introLogo { width:300px; opacity:0; transform: scale(0.5); animation:logoIntro 2s ease forwards; }
+    @keyframes logoIntro { 0% { opacity:0; transform:scale(0.5); } 50% { opacity:1; transform:scale(1.2); } 100% { opacity:1; transform:scale(1); } }
+    #intro.fadeOut { animation:fadeOut 1s forwards; }
+    @keyframes fadeOut { to { opacity:0; visibility:hidden; } }
+    #introParticles { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+
+    /* --- Canvas de partículas fondo --- */
+    #particlesCanvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:-1; }
+
+    /* --- Menú lateral --- */
+    #menuBtn { position:fixed; top:30px; left:30px; z-index:25; font-size:2em; color:#ff3366; cursor:pointer; transition:transform .3s; }
+    #menuBtn:hover { transform:rotate(90deg); }
+    #sidebar { position:fixed; top:0; left:-320px; width:320px; height:100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); border-right:2px solid #ff3366; box-shadow:0 0 40px #ff3366 inset; z-index:30; transition:left .5s; padding-top:120px; display:flex; flex-direction:column; overflow:hidden; }
+    #sidebar.active { left:0; animation:sidebarGlow 0.8s ease forwards; }
+    #closeBtn { position:absolute; top:20px; right:20px; font-size:1.8em; cursor:pointer; color:#ff3366; transition:transform .3s; }
+    #closeBtn:hover { transform:rotate(90deg); }
+    #sidebar a { display:flex; align-items:center; gap:15px; color:#ff77aa; font-size:1.5em; padding:20px; text-shadow:0 0 10px #ff3366; transition: all .3s; transform: translateX(-50px); opacity:0; text-decoration:none; }
+    #sidebar.active a { animation:linkFadeIn 0.5s forwards; }
+    #sidebar.active a:nth-child(1){ animation-delay:0.2s; }
+    #sidebar.active a:nth-child(2){ animation-delay:0.35s; }
+    #sidebar.active a:nth-child(3){ animation-delay:0.5s; }
+    #sidebar.active a:nth-child(4){ animation-delay:0.65s; }
+    #sidebar a img { width:25px; height:25px; object-fit:contain; }
+    #sidebar a.activeLink { color:#fff; text-shadow:0 0 20px #ff33cc,0 0 60px #ff66ff; }
+    @keyframes sidebarGlow { 0% { box-shadow:0 0 0 #ff3366 inset; } 100% { box-shadow:0 0 40px #ff3366 inset; } }
+    @keyframes linkFadeIn { 0% { opacity:0; transform:translateX(-50px); } 100% { opacity:1; transform:translateX(0); } }
+
+    /* --- Header --- */
+    header { text-align:center; padding:180px 20px 50px; perspective:800px; }
+    header h1 { font-size:5em; color:#ff33cc; text-shadow:0 0 20px #ff33cc,0 0 60px #ff66ff; animation:logoGlow 2s infinite alternate; cursor:pointer; }
+    header p { font-size:1.5em; color:#ff99cc; margin-top:20px; }
+    @keyframes logoGlow { 0% { text-shadow:0 0 20px #ff33cc,0 0 60px #ff66ff; } 100% { text-shadow:0 0 40px #ff33cc,0 0 100px #ff99ff; } }
+
+    /* --- Secciones --- */
+    section { padding:100px 20px; min-height:100vh; max-width:1200px; margin:0 auto; opacity:0; transform:translateY(50px); transition:all 1s ease; }
+    section.active { opacity:1; transform:translateY(0); }
+    h2 { text-align:center; font-size:3em; color:#ff33cc; margin-bottom:50px; text-shadow:0 0 20px #ff33cc; }
+    p { font-size:1.2em; line-height:1.8; color:#fff; max-width:800px; margin:0 auto; }
+
+    /* --- Proyectos --- */
+    .project-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; }
+    .project-card { background: rgba(50,0,50,0.75); padding:20px; border-radius:15px; box-shadow:0 0 10px #ff33cc inset; transition:.3s; transform-style:preserve-3d; cursor:pointer; }
+    .project-card:hover { transform:translateY(-10px) scale(1.05) rotateY(10deg); box-shadow:0 0 30px #ff33cc,0 0 60px #ff66ff inset; }
+    .project-card h3 { color:#ff99cc; margin-bottom:10px; }
+    .project-card p { color:#fff; }
+
+    /* --- Habilidades --- */
+    .skills-grid { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; }
+    .skill { background: rgba(50,0,50,0.75); padding:20px; border-radius:15px; width:150px; text-align:center; cursor:pointer; transition:.3s; box-shadow:0 0 5px #ff33cc; }
+    .skill:hover { transform:scale(1.1); box-shadow:0 0 20px #ff66ff; }
+
+    /* --- Contacto --- */
+    #contact form { max-width:600px; margin:0 auto; display:flex; flex-direction:column; gap:15px; }
+    #contact input,#contact textarea { padding:10px; border-radius:8px; border:none; font-size:1em; background:#1a001a; color:#fff; }
+    #contact button { padding:15px; background:#ff33cc; color:#fff; font-weight:bold; border:none; border-radius:8px; cursor:pointer; transition:.3s; }
+    #contact button:hover { background:#ff66ff; transform:scale(1.05); }
+
+    /* --- Footer --- */
+    footer { position: relative; background: #0a0a0a; padding: 60px 20px 40px; text-align: center; }
+    footer img { width:150px; height:auto; cursor:pointer; transition: transform .3s; filter: drop-shadow(0 0 10px #ff33cc); }
+    footer img:hover { transform: scale(1.1); }
+
+    /* --- Modal de proyecto --- */
+    #projectModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:50; overflow:auto; padding:50px; box-sizing:border-box; }
+    #projectModalContent { max-width:900px; margin:0 auto; background:rgba(30,0,30,0.95); border-radius:15px; padding:30px; position:relative; }
+    #closeModal { position:absolute; top:20px; right:20px; font-size:2em; cursor:pointer; color:#ff3366; transition:transform .3s; }
+    #closeModal:hover { transform:rotate(90deg); }
+    #projectModalContent h2 { color:#ff33cc; text-shadow:0 0 20px #ff33cc; }
+    #projectModalContent p { color:#fff; margin-top:20px; line-height:1.6; }
+    #projectModalContent img { width:100%; border-radius:10px; margin-top:20px; }
+    #projectModalContent a.downloadBtn { display:inline-block; margin-top:20px; padding:12px 25px; background:#ff33cc; color:#fff; border-radius:10px; text-decoration:none; font-weight:bold; transition:.3s; }
+    #projectModalContent a.downloadBtn:hover { background:#ff66ff; transform:scale(1.05); }
+
+</style>
+</head>
+<body>
+
+<!-- Logo de fondo tenue -->
+<img id="backgroundLogo" src="https://raw.githubusercontent.com/dmxyt/website/refs/heads/gh-pages/assets/20250817_224509.png" alt="Daemonix Logo" />
+
+<!-- Intro Sobrenatural -->
+<div id="intro">
+  <canvas id="introParticles"></canvas>
+  <img id="introLogo" src="https://raw.githubusercontent.com/dmxyt/website/refs/heads/gh-pages/assets/20250817_224509.png" alt="Daemonix Logo">
+</div>
+
+<!-- Canvas de partículas sutiles -->
+<canvas id="particlesCanvas"></canvas>
+
+<!-- Menú lateral -->
+<div id="menuBtn">☰</div>
+<div id="sidebar">
+  <div id="closeBtn">✕</div>
+  <a href="#about"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="sobre mí">Sobre mí</a>
+  <a href="#projects"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135743.png" alt="proyectos">Proyectos</a>
+  <a href="#skills"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135728.png" alt="habilidades">Habilidades</a>
+  <a href="#contact"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135731.png" alt="contacto">Contacto</a>
+</div>
+
+<header>
+  <h1 id="mainLogo">Daemonix</h1>
+  <p>Devfolio Sobrenatural: Profesional y elegante</p>
+</header>
+
+<section id="about">
+  <h2>Sobre mí</h2>
+  <p>“Soy Daemonix, maestro del código y arquitecto de experiencias digitales. Combino estética sobrenatural con profesionalismo extremo, transformando ideas en interfaces interactivas únicas. Cada proyecto que creo no solo funciona: cautiva, impresiona y deja huella en quienes lo usan. Bienvenido a mi mundo, donde el diseño se encuentra con la magia y la tecnología se vuelve arte.”</p>
+</section>
+
+<section id="projects">
+  <h2>Proyectos</h2>
+  <div class="project-grid">
+    <div class="project-card"><h3>Proyecto A</h3><p>Roms 64: Descarga y disfruta tus videojuegos retro favoritos de Nintendo 64.</p></div>
+    <div class="project-card"><h3>Proyecto B</h3><p>Experiencia profesional con glow elegante. Diseñado para usuarios que buscan estética y funcionalidad.</p></div>
+    <div class="project-card"><h3>Proyecto C</h3><p>Diseño épico y limpio con interacciones modernas. Combina tecnología con estilo sobrenatural.</p></div>
+  </div>
+</section>
+
+<section id="skills">
+  <h2>Habilidades</h2>
+  <div class="skills-grid">
+    <div class="skill">HTML & CSS</div>
+    <div class="skill">JavaScript</div>
+    <div class="skill">React</div>
+    <div class="skill">Node.js</div>
+    <div class="skill">Animaciones CSS</div>
+    <div class="skill">UI/UX</div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contacto</h2>
+  <form>
+    <input type="text" placeholder="Tu nombre" required>
+    <input type="email" placeholder="Tu correo" required>
+    <textarea rows="5" placeholder="Tu mensaje" required></textarea>
+    <button type="submit">Enviar</button>
+  </form>
+</section>
+
+<footer>
+  <div class="footer-content">
+    <a href="https://tu-sitio.com" target="_blank">
+      <img src="https://raw.githubusercontent.com/dmxyt/website/refs/heads/gh-pages/assets/20250817_224509.png" alt="Daemonix Logo">
+    </a>
+  </div>
+</footer>
+
+<!-- Modal de proyecto -->
+<div id="projectModal">
+  <div id="projectModalContent">
+    <span id="closeModal">✕</span>
+    <h2 id="modalTitle"></h2>
+    <p id="modalDesc"></p>
+    <img id="modalImg" src="" alt="Proyecto">
+    <a id="modalDownload" class="downloadBtn" href="" target="_blank">Descargar</a>
+  </div>
+</div>
+
+<script>
+// --- Intro Sobrenatural ---
+const intro = document.getElementById('intro');
+const introLogo = document.getElementById('introLogo');
+const introCanvas = document.getElementById('introParticles');
+const ctxIntro = introCanvas.getContext('2d');
+introCanvas.width = window.innerWidth;
+introCanvas.height = window.innerHeight;
+
+class ParticleIntro {
+  constructor(x, y, color, char) {
+    this.x = x; this.y = y;
+    this.size = Math.random()*3+1;
+    this.speedX = Math.random()*4-2;
+    this.speedY = Math.random()*4-2;
+    this.color = color;
+    this.char = char;
+  }
+  update() { this.x += this.speedX; this.y += this.speedY; this.size *= 0.98; }
+  draw() { ctxIntro.fillStyle = this.color; ctxIntro.font = `${this.size*5}px serif`; ctxIntro.fillText(this.char, this.x, this.y); }
+}
+let particles = [];
+const runas = ['ᚠ','ᚢ','ᚦ','ᚨ','ᚱ','ᚲ','ᚷ','ᚹ','ᚺ','ᚾ','ᛁ','ᛃ','ᛇ','ᛈ','ᛉ','ᛋ'];
+
+function explodeLogo(){
+  const rect = introLogo.getBoundingClientRect();
+  const centerX = rect.left + rect.width/2;
+  const centerY = rect.top + rect.height/2;
+  const colors=['#ff33cc','#ff66ff','#ff99ff'];
+  for(let i=0;i<300;i++){
+    const rune = runas[Math.floor(Math.random()*runas.length)];
+    particles.push(new ParticleIntro(
+      centerX + (Math.random()*rect.width-rect.width/2),
+      centerY + (Math.random()*rect.height-rect.height/2),
+      colors[Math.floor(Math.random()*colors.length)],
+      rune
+    ));
+  }
+  introLogo.style.transition="all 0.8s ease";
+  introLogo.style.transform="scale(0)";
+  setTimeout(()=>intro.classList.add('fadeOut'),1800);
+}
+
+function animateIntro(){
+  ctxIntro.clearRect(0,0,introCanvas.width,introCanvas.height);
+  particles.forEach((p,i)=>{
+    p.update();
+    p.draw();
+    if(p.size<0.5) particles.splice(i,1);
+  });
+  requestAnimationFrame(animateIntro);
+}
+animateIntro();
+setTimeout(explodeLogo,2200);
+window.addEventListener('resize', ()=>{ introCanvas.width=window.innerWidth; introCanvas.height=window.innerHeight; });
+
+// --- Menú lateral ---
+const menuBtn = document.getElementById('menuBtn');
+const sidebar = document.getElementById('sidebar');
+const closeBtn = document.getElementById('closeBtn');
+menuBtn.addEventListener('click', ()=>{ sidebar.classList.add('active'); });
+closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('active'); });
+
+// --- Secciones activas ---
+const links = document.querySelectorAll('#sidebar a');
+const sections = document.querySelectorAll('section');
+window.addEventListener('scroll', ()=>{
+  let scrollPos = window.scrollY + window.innerHeight/2;
+  sections.forEach((section,index)=>{
+    if(scrollPos>=section.offsetTop && scrollPos<section.offsetTop+section.offsetHeight){
+      links.forEach(link=>link.classList.remove('activeLink'));links[index].classList.add('activeLink');
+    }
+  });
+});
+
+function checkActiveSection(){
+  const triggerBottom = window.innerHeight/1.2;
+  sections.forEach(section=>{
+    if(section.getBoundingClientRect().top<triggerBottom) section.classList.add('active');
+  });
+}
+window.addEventListener('scroll', checkActiveSection);
+window.addEventListener('load', checkActiveSection);
+
+// --- Partículas de fondo ---
+const canvas = document.getElementById('particlesCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+let particlesArray = [];
+class Particle {
+  constructor() {
+    this.x = Math.random()*canvas.width;
+    this.y = Math.random()*canvas.height;
+    this.size = Math.random()*2+1;
+    this.speedX = Math.random()*0.3-0.15;
+    this.speedY = Math.random()*0.3-0.15;
+    this.color = `rgba(255,51,204,${Math.random()})`;
+  }
+  update() {
+    this.x += this.speedX; this.y += this.speedY;
+    if(this.x>canvas.width) this.x=0;
+    if(this.x<0) this.x=canvas.width;
+    if(this.y>canvas.height) this.y=0;
+    if(this.y<0) this.y=canvas.height;
+  }
+  draw() {
+    ctx.fillStyle=this.color;
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fill();
+  }
+}
+for(let i=0;i<100;i++) particlesArray.push(new Particle());
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particlesArray.forEach(p=>{p.update();p.draw();});
+  requestAnimationFrame(animate);
+}
+animate();
+window.addEventListener('resize', ()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
+
+// --- Modal de proyectos ---
+const projectCards = document.querySelectorAll('.project-card');
+const projectModal = document.getElementById('projectModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalDesc = document.getElementById('modalDesc');
+const modalImg = document.getElementById('modalImg');
+const modalDownload = document.getElementById('modalDownload');
+const closeModal = document.getElementById('closeModal');
+
+const projectsData = {
+  "Proyecto A": { 
+    title:"Roms 64", 
+    desc:"Descarga y disfruta tus videojuegos retro favoritos de Nintendo 64 con facilidad. Nuestra colección de Roms está optimizada para ofrecer una experiencia fluida, con títulos clásicos que te transportan a la era dorada del gaming. Vive la nostalgia y redescubre los juegos que marcaron generaciones.", 
+    img:"https://via.placeholder.com/800x400.png?text=Proyecto+A",
+    download:"https://tu-sitio.com/roms64.zip" 
+  },
+  "Proyecto B": { 
+    title:"Proyecto B", 
+    desc:"Experiencia profesional con glow elegante. Diseñado para usuarios que buscan estética y funcionalidad.", 
+    img:"https://via.placeholder.com/800x400.png?text=Proyecto+B",
+    download:"https://tu-sitio.com/proyectoB.zip"
+  },
+  "Proyecto C": { 
+    title:"Proyecto C", 
+    desc:"Diseño épico y limpio con interacciones modernas. Combina tecnología con estilo sobrenatural.", 
+    img:"https://via.placeholder.com/800x400.png?text=Proyecto+C",
+    download:"https://tu-sitio.com/proyectoC.zip"
+  }
+};
+
+projectCards.forEach(card=>{
+  card.addEventListener('click', ()=>{
+    const title = card.querySelector('h3').innerText;
+    modalTitle.innerText = projectsData[title].title;
+    modalDesc.innerText = projectsData[title].desc;
+    modalImg.src = projectsData[title].img;
+    modalDownload.href = projectsData[title].download;
+    projectModal.style.display="block";
+  });
+});
+
+closeModal.addEventListener('click', ()=>{ projectModal.style.display="none"; });
+projectModal.addEventListener('click', e=>{ if(e.target===projectModal) projectModal.style.display="none"; });
+
+</script>
+</body>
+  </html>
