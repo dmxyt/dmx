@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="theme-color" content="#ff00ff">
+  <meta name="description" content="Página oficial de DaemonixGames">
+    <meta name="keywords" content="Gamestore, YouTuber, Reseñas, Tutoriales, y información gamer">
+    <meta name="author" content="Daemonix LLC">
+    <meta name="robots" content="index, follow">
+       <meta property="og:title" content="Daemonix">
+    <meta property="og:description" content="Visita nuestro sitio web oficial ">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/dmxyt/dmx@4b74b4220c95839d4a31b508c5865d3aa977bc0d/file_00000000987061f9bef2eed150ca945c.png">
+    <meta property="og:url" content="https://www.dmx.is-a.dev">
+    <meta property="og:type" content="website">
+<title>Daemonix</title>
+ <link rel="icon" href="https://cdn.jsdelivr.net/gh/dmxyt/dmx@4b74b4220c95839d4a31b508c5865d3aa977bc0d/file_00000000252c61f5ae7daf652b95e881.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color-primary: #ff00ff;
+  --color-secondary: #00ffff;
+  --bg-dark: #0a0a0f;
+  --text-light: #ffffff;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Orbitron', sans-serif; background:var(--bg-dark); color:var(--text-light); overflow-x:hidden; }
+
+/* Header y menú */
+header { display:flex; justify-content:space-between; align-items:center; padding:20px 30px; background: linear-gradient(90deg,var(--color-primary),var(--color-secondary)); text-shadow:0 0 10px var(--color-primary),0 0 20px var(--color-secondary); font-size:2rem; font-weight:bold; }
+header a { display:flex; align-items:center; gap:10px; text-decoration:none; }
+header a span { font-size:2rem; font-weight:bold; color:#fff; text-shadow:0 0 10px var(--color-primary),0 0 20px var(--color-secondary); }
+
+.menu-toggle { display:none; flex-direction:column; cursor:pointer; gap:5px; }
+.menu-toggle span { height:3px; width:25px; background:#fff; border-radius:2px; }
+nav { display:flex; gap:25px; transition: transform 0.3s ease; }
+nav a { display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--text-light); padding:12px 20px; border:2px solid var(--color-primary); border-radius:30px; background:rgba(255,0,255,0.08); transition:0.3s; font-weight:bold; font-size:1rem; }
+nav a:hover { background: var(--color-secondary); color:#000; transform: translateY(-3px) scale(1.05); box-shadow:0 0 20px var(--color-secondary); }
+nav img { width:22px; height:22px; filter:brightness(0) invert(1); }
+
+/* X para cerrar menú */
+.close-menu { display:none; font-size:2rem; color:var(--color-primary); text-align:right; cursor:pointer; margin-bottom:20px; }
+
+/* Secciones */
+section { max-width:1100px; margin:80px auto; padding:30px; background:rgba(255,255,255,0.02); border-radius:15px; border:1px solid rgba(0,255,255,0.3); box-shadow:0 0 25px rgba(0,255,255,0.2); }
+h2 { text-align:center; margin-bottom:25px; color:var(--color-secondary); text-shadow:0 0 10px var(--color-primary); font-size:1.8rem; letter-spacing:1px; }
+h3 { text-align:center; margin-bottom:15px; font-size:1.5rem; }
+p { text-align:center; font-size:1.1rem; opacity:0.9; }
+
+/* Footer */
+footer { display:flex; justify-content:center; align-items:center; gap:15px; padding:25px; background:#111; color:#aaa; font-size:0.9rem; border-top:2px solid var(--color-secondary); margin-top:40px; }
+
+/* Redes sociales hover y perfil hover */
+#redes a:hover img, #perfil img:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 10px #00ffff) drop-shadow(0 0 10px #ff00ff);
+}
+
+/* Cards de juegos y proyectos */
+.cards-container {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:25px;
+  margin-top:25px;
+}
+.card {
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--color-secondary);
+  border-radius:15px;
+  padding:15px;
+  width:150px;
+  text-align:center;
+  transition:0.3s;
+  box-shadow:0 0 15px rgba(0,255,255,0.1);
+}
+.card img {
+  width:100%;
+  border-radius:10px;
+  margin-bottom:10px;
+  transition:0.3s;
+}
+.card:hover {
+  transform:translateY(-5px) scale(1.05);
+  box-shadow:0 0 20px var(--color-primary), 0 0 25px var(--color-secondary);
+}
+.card:hover img {
+  filter: drop-shadow(0 0 10px #00ffff) drop-shadow(0 0 10px #ff00ff);
+}
+
+/* Intro splash screen */
+#intro {
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:var(--bg-dark);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+  animation: fadeOutIntro 2.5s forwards 2s;
+}
+.intro-logo {
+  width:150px;
+  animation: glowIntro 2s infinite alternate;
+}
+@keyframes glowIntro {
+  0% { filter: drop-shadow(0 0 10px #ff00ff) drop-shadow(0 0 10px #00ffff); transform: scale(1); }
+  100% { filter: drop-shadow(0 0 30px #ff00ff) drop-shadow(0 0 30px #00ffff); transform: scale(1.1); }
+}
+@keyframes fadeOutIntro {
+  0% { opacity:1; }
+  100% { opacity:0; pointer-events:none; display:none; }
+}
+
+/* Animaciones generales */
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+@keyframes fadeUp { from{opacity:0; transform:translateY(40px);} to{opacity:1; transform:translateY(0);} }
+@keyframes glow { from{text-shadow:0 0 10px var(--color-primary);} to{text-shadow:0 0 25px var(--color-secondary),0 0 35px var(--color-primary);} }
+
+/* Responsive */
+@media(max-width:768px){
+  .menu-toggle { display:flex; }
+  nav { 
+    position:fixed; top:0; right:-250px; height:100%; flex-direction:column; background:rgba(0,0,0,0.95); padding:60px 20px; gap:20px; z-index:1000; transition:0.3s; 
+  }
+  nav.active { right:0; }
+  .close-menu { display:block; }
+}
+</style>
+</head>
+<body>
+
+<!-- Intro animada -->
+<div id="intro">
+  <img src="https://cdn.jsdelivr.net/gh/dmxyt/dmx@56977f58a2fb493b8e3c7e74fa91e2dccd89fbce/20250902_095255.png" alt="Logo DmX" class="intro-logo">
+</div>
+
+<header>
+  <a href="_blank">
+    <img src="https://cdn.jsdelivr.net/gh/dmxyt/dmx@56977f58a2fb493b8e3c7e74fa91e2dccd89fbce/20250902_095255.png" alt="Logo DmX" style="height:50px;">
+    <span>Daemonix</span>
+  </a>
+  <div class="menu-toggle" id="menu-toggle"><span></span><span></span><span></span></div>
+  <nav id="nav">
+    <div class="close-menu" id="close-menu">✖</div>
+    <a href="#perfil"><img src="https://img.icons8.com/ios-filled/50/ffffff/user.png" alt="Perfil"/>Perfil</a>
+    <a href="#proyectos"><img src="https://img.icons8.com/ios-filled/50/ffffff/controller.png" alt="Proyectos"/>Proyectos</a>
+    <a href="#redes"><img src="https://img.icons8.com/ios-filled/50/ffffff/share.png" alt="Redes"/>Redes</a>
+  </nav>
+</header>
+
+<section id="perfil">
+  <h2>👾 Perfil Gamer</h2>
+  <p>Usuario: <strong>xXAlexios</strong></p>
+  <div style="display:flex; justify-content:center; gap:30px; margin-top:20px; flex-wrap:wrap;">
+    <img src="https://img.icons8.com/ios-filled/50/00ff00/xbox.png" alt="Xbox" style="width:50px;height:50px;transition:0.3s;">
+    <img src="https://cdn.jsdelivr.net/gh/dmxyt/dmx@1020d2f124e93561d5e203a97d757b03490c35b9/dfgklw4-702d19fb-de04-4b9d-b9dd-a759ca15f16c.png" alt="PlayStation" style="width:50px;height:50px;transition:0.3s;">
+    <img src="https://img.icons8.com/ios-filled/50/ff0000/nintendo-switch.png" alt="Nintendo Switch" style="width:50px;height:50px;transition:0.3s;">
+  </div>
+  <h3>🎮 Juegos Favoritos</h3>
+  <div class="cards-container">
+    <div class="card">
+      <img src="https://www.mobygames.com/images/covers/l/306946-halo-the-master-chief-collection-xbox-one-front-cover.jpg" alt="Halo Saga">
+      <h4>Halo (Saga)</h4>
+    </div>
+    <div class="card">
+      <img src="https://m.media-amazon.com/images/I/615S2VgX71L._UF894,1000_QL80_FMwebp_.jpg" alt="CoD Saga">
+      <h4>Call Of Duty (Saga)</h4>
+    </div>
+    <div class="card">
+      <img src="https://m.media-amazon.com/images/I/81YImpJ7XdL._SL1500_.jpg" alt="_Blank">
+      <h4>Red Dead Redeptiom (1,2)</h4>
+    </div>
+  </div>
+</section>
+
+<section id="proyectos">
+  <h2>🎮 Proyectos & Juegos</h2>
+  <p>Aquí encontrarás mis proyectos, juegos en los que he trabajado y colaboraciones épicas.</p>
+  <div class="cards-container">
+    <div class="card">
+      <img src="https://cdn.jsdelivr.net/gh/dmxyt/dmx@e27756125dcb558e254e6e1bfe3e4c5360ba214b/file_00000000c68061f59df88b8d3d4956e0%20(1).png" alt="Proyecto 1">
+      <h4>Proyecto 1</h4>
+      <p>Coming Soon</p>
+    </div>
+    <div class="card">
+      <img src="https://cdn.jsdelivr.net/gh/dmxyt/dmx@e27756125dcb558e254e6e1bfe3e4c5360ba214b/file_00000000c68061f59df88b8d3d4956e0%20(1).png" alt="Proyecto 2">
+      <h4>Proyecto 2</h4>
+      <p>Coming Soon</p>
+    </div>
+    <div class="card">
+      <img src="https://cdn.jsdelivr.net/gh/dmxyt/dmx@e27756125dcb558e254e6e1bfe3e4c5360ba214b/file_00000000c68061f59df88b8d3d4956e0%20(1).png" alt="Proyecto 3">
+      <h4>Proyecto 3</h4>
+      <p>Coming Soon</p>
+    </div>
+  </div>
+</section>
+
+<section id="redes">
+  <h2>🌐 Conéctate Conmigo</h2>
+  <p>Sígueme en mis redes sociales para estar al tanto de mis creaciones y partidas.</p>
+  <div style="display:flex; justify-content:center; gap:30px; margin-top:20px; flex-wrap:wrap;">
+    <a href="https://twitter.com/" target="_blank"><img src="https://img.icons8.com/ios-filled/50/00ffff/twitter.png" alt="Twitter" style="width:50px;height:50px;transition:0.3s;"></a>
+    <a href="https://www.youtube.com/@daemonixgames" target="_blank"><img src="https://img.icons8.com/ios-filled/50/ff00ff/youtube-play.png" alt="YouTube" style="width:50px;height:50px;transition:0.3s;"></a>
+    <a href="https://discord.com/" target="_blank"><img src="https://img.icons8.com/ios-filled/50/00ffff/discord-logo.png" alt="Discord" style="width:50px;height:50px;transition:0.3s;"></a>
+    <a href="https://www.twitch.tv/" target="_blank"><img src="https://img.icons8.com/ios-filled/50/ff00ff/twitch.png" alt="Twitch" style="width:50px;height:50px;transition:0.3s;"></a>
+  </div>
+</section>
+
+<section id="about">
+  <h2>Sobre mí</h2>
+  <p>“Alex Cabrera (DmX Alexios / Alexarion) – Gamer de corazón y desarrollador creativo, siempre listo para sumergirse en nuevas aventuras y desafíos digitales.” 🎮</p>
+</section>
+
+<section id="friends">
+  <h2>Amigos</h2>
+  <h1 style="color: fuchsia; text-shadow: 2px 2px 5px cyan;">ExiorCardi</h1>
+  <h4>Administrador, Mejor amigo, Gamer</h4>
+ <h1 style="color: cyan; text-shadow: 2px 2px 5px fuchsia;">ATRX NoXx</h1>
+ <h4>Mejor amigo, Gamer</h4>
+</section>
+
+<footer>
+  <img src="https://cdn.jsdelivr.net/gh/dmxyt/dmx@56977f58a2fb493b8e3c7e74fa91e2dccd89fbce/20250902_095255.png" alt="Logo DmX" style="height:35px;">
+  <span>© 2025 Grupo Daemonix | Todos los derechos reservados</span>
+</footer>
+
+<script>
+const toggle = document.getElementById('menu-toggle');
+const nav = document.getElementById('nav');
+const closeMenu = document.getElementById('close-menu');
+
+toggle.addEventListener('click', () => { nav.classList.add('active'); });
+closeMenu.addEventListener('click', () => { nav.classList.remove('active'); });
+
+// Cierra el menú al hacer clic en un enlace
+nav.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => { nav.classList.remove('active'); });
+});
+
+// Remueve el intro después de la animación
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const intro = document.getElementById('intro');
+    if(intro) intro.style.display = 'none';
+  }, 4500); // 2s espera + 2.5s animación
+});
+</script>
+</body>
+</html>
