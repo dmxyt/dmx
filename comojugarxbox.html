@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Cómo Usar?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at center, #0d0d0d 40%, #050505 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Orbitron', sans-serif;
+      color: #00ffff;
+    }
+
+    .video-container {
+      text-align: center;
+      width: 90%;
+      max-width: 950px;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #000;
+      box-shadow:
+        0 0 20px #ff00ff,
+        0 0 40px #00ffff,
+        0 0 80px rgba(255,0,255,0.6);
+      border: 3px solid #00ffff;
+      animation: glow 3s infinite alternate;
+      margin-bottom: 15px;
+    }
+
+    @keyframes glow {
+      0% {
+        box-shadow:
+          0 0 15px #ff00ff,
+          0 0 30px #00ffff,
+          0 0 60px rgba(0,255,255,0.5);
+      }
+      100% {
+        box-shadow:
+          0 0 30px #ff00ff,
+          0 0 60px #00ffff,
+          0 0 100px rgba(255,0,255,0.7);
+      }
+    }
+
+    #player {
+      width: 100%;
+      height: 100%;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: #00ffff;
+      background: transparent;
+      border: 2px solid #ff00ff;
+      border-radius: 10px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: 0.3s;
+      text-shadow: 0 0 10px #ff00ff;
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    .btn:hover {
+      background: #ff00ff;
+      color: #0d0d0d;
+      box-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #111;
+      border-radius: 5px;
+      margin: 15px 0;
+      overflow: hidden;
+      box-shadow: 0 0 10px #00ffff;
+      cursor: pointer;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff00ff, #00ffff);
+      transition: width 0.2s;
+    }
+
+    .volume-slider {
+      width: 120px;
+      accent-color: #ff00ff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-container">
+    <div class="video-wrapper">
+      <div id="player"></div>
+    </div>
+
+    <div class="progress-bar" onclick="seekVideo(event)">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" onclick="playVideo()">▶ Play</button>
+      <button class="btn" onclick="pauseVideo()">⏸ Pause</button>
+      <button class="btn" onclick="stopVideo()">⏹ Stop</button>
+      <button class="btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
+      <input type="range" class="volume-slider" min="0" max="100" value="100" onchange="setVolume(this.value)">
+    </div>
+  </div>
+
+  <script>
+    // API de YouTube
+    let tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    let firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    let player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player("player", {
+        videoId: "IsiRYiHllpc", // tu video
+        playerVars: {
+          controls: 0, // ocultamos controles nativos
+          modestbranding: 1,
+          rel: 0
+        },
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      updateProgress();
+    }
+
+    function playVideo() {
+      player.playVideo();
+    }
+    function pauseVideo() {
+      player.pauseVideo();
+    }
+    function stopVideo() {
+      player.stopVideo();
+    }
+    function setVolume(value) {
+      player.setVolume(value);
+    }
+
+    // Progreso
+    function updateProgress() {
+      setInterval(() => {
+        if (player && player.getDuration) {
+          let percent = (player.getCurrentTime() / player.getDuration()) * 100;
+          document.getElementById("progress").style.width = percent + "%";
+        }
+      }, 500);
+    }
+
+    function seekVideo(event) {
+      let bar = event.currentTarget;
+      let clickX = event.offsetX;
+      let width = bar.offsetWidth;
+      let duration = player.getDuration();
+      let seekTo = (clickX / width) * duration;
+      player.seekTo(seekTo, true);
+    }
+
+    // Pantalla completa
+    function toggleFullScreen() {
+      let iframe = document.querySelector("#player");
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.mozRequestFullScreen) { 
+        iframe.mozRequestFullScreen();
+      } else if (iframe.webkitRequestFullscreen) { 
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) { 
+        iframe.msRequestFullscreen();
+      }
+    }
+
+    function onPlayerStateChange(event) {
+      // futuro: animaciones según estado
+    }
+  </script>
+</body>
+</html>
