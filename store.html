@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="theme-color" content="#ff00ff">
+  <meta name="description" content="Gamestore">
+    <meta name="keywords" content="Gamestore">
+    <meta name="author" content="Daemonix LLC">
+    <meta name="robots" content="index, follow">
+       <meta property="og:title" content="Daemonix">
+    <meta property="og:description" content="Visita nuestro sitio web oficial ">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/dmxyt/dmx@4b74b4220c95839d4a31b508c5865d3aa977bc0d/file_00000000987061f9bef2eed150ca945c.png">
+    <meta property="og:url" content="https://www.dmx.gt.tc">
+    <meta property="og:type" content="website">
+<title>DaemonixGames | Store</title>
+ <link rel="icon" href="https://cdn.jsdelivr.net/gh/dmxyt/dmx@4b74b4220c95839d4a31b508c5865d3aa977bc0d/file_00000000252c61f5ae7daf652b95e881.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+    --daemonix-fucsia: #ff00ff;
+    --daemonix-cyan: #00ffff;
+}
+
+.daemonix-button {
+    position: relative;
+    padding: 15px 50px 15px 50px; /* espacio para el icono */
+    font-size: 20px;
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    background: linear-gradient(45deg, var(--daemonix-fucsia), var(--daemonix-cyan));
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s ease;
+    overflow: hidden;
+}
+
+.daemonix-button:hover {
+    transform: scale(1.05);
+}
+
+/* Icono dentro del botón */
+.daemonix-button img {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px;
+    height: 35px;
+    pointer-events: none;
+}
+
+/* Opcional: resplandor neón al pasar el mouse */
+.daemonix-button:hover {
+    box-shadow: 0 0 10px var(--daemonix-fucsia), 0 0 20px var(--daemonix-cyan);
+}
+
+:root {
+  --color-primary: #ff00ff;
+  --color-secondary: #00ffff;
+  --bg-dark: #0a0a0f;
+  --text-light: #ffffff;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Orbitron', sans-serif; background:var(--bg-dark); color:var(--text-light); overflow-x:hidden; }
+
+/* Header y menú */
+header { display:flex; justify-content:space-between; align-items:center; padding:20px 30px; background: linear-gradient(90deg,var(--color-primary),var(--color-secondary)); text-shadow:0 0 10px var(--color-primary),0 0 20px var(--color-secondary); font-size:2rem; font-weight:bold; }
+header a { display:flex; align-items:center; gap:10px; text-decoration:none; }
+header a span { font-size:2rem; font-weight:bold; color:#fff; text-shadow:0 0 10px var(--color-primary),0 0 20px var(--color-secondary); }
+
+.menu-toggle { display:none; flex-direction:column; cursor:pointer; gap:5px; }
+.menu-toggle span { height:3px; width:25px; background:#fff; border-radius:2px; }
+nav { display:flex; gap:25px; transition: transform 0.3s ease; }
+nav a { display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--text-light); padding:12px 20px; border:2px solid var(--color-primary); border-radius:30px; background:rgba(255,0,255,0.08); transition:0.3s; font-weight:bold; font-size:1rem; }
+nav a:hover { background: var(--color-secondary); color:#000; transform: translateY(-3px) scale(1.05); box-shadow:0 0 20px var(--color-secondary); }
+nav img { width:22px; height:22px; filter:brightness(0) invert(1); }
+
+/* X para cerrar menú */
+.close-menu { display:none; font-size:2rem; color:var(--color-primary); text-align:right; cursor:pointer; margin-bottom:20px; }
+
+/* Secciones */
+section { max-width:1100px; margin:80px auto; padding:30px; background:rgba(255,255,255,0.02); border-radius:15px; border:1px solid rgba(0,255,255,0.3); box-shadow:0 0 25px rgba(0,255,255,0.2); }
+h2 { text-align:center; margin-bottom:25px; color:var(--color-secondary); text-shadow:0 0 10px var(--color-primary); font-size:1.8rem; letter-spacing:1px; }
+h3 { text-align:center; margin-bottom:15px; font-size:1.5rem; }
+p { text-align:center; font-size:1.1rem; opacity:0.9; }
+
+/* Footer */
+footer { display:flex; justify-content:center; align-items:center; gap:15px; padding:25px; background:#111; color:#aaa; font-size:0.9rem; border-top:2px solid var(--color-secondary); margin-top:40px; }
+
+/* Redes sociales hover y perfil hover */
+#redes a:hover img, #perfil img:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 10px #00ffff) drop-shadow(0 0 10px #ff00ff);
+}
+
+/* Cards de juegos y proyectos */
+.cards-container {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:25px;
+  margin-top:25px;
+}
+.card {
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--color-secondary);
+  border-radius:15px;
+  padding:15px;
+  width:150px;
+  text-align:center;
+  transition:0.3s;
+  box-shadow:0 0 15px rgba(0,255,255,0.1);
+}
+.card img {
+  width:100%;
+  border-radius:10px;
+  margin-bottom:10px;
+  transition:0.3s;
+}
+.card:hover {
+  transform:translateY(-5px) scale(1.05);
+  box-shadow:0 0 20px var(--color-primary), 0 0 25px var(--color-secondary);
+}
+.card:hover img {
+  filter: drop-shadow(0 0 10px #00ffff) drop-shadow(0 0 10px #ff00ff);
+}
+
+/* Intro splash screen */
+#intro {
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:var(--bg-dark);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+  animation: fadeOutIntro 2.5s forwards 2s;
+}
+.intro-logo {
+  width:150px;
+  animation: glowIntro 2s infinite alternate;
+}
+@keyframes glowIntro {
+  0% { filter: drop-shadow(0 0 10px #ff00ff) drop-shadow(0 0 10px #00ffff); transform: scale(1); }
+  100% { filter: drop-shadow(0 0 30px #ff00ff) drop-shadow(0 0 30px #00ffff); transform: scale(1.1); }
+}
+@keyframes fadeOutIntro {
+  0% { opacity:1; }
+  100% { opacity:0; pointer-events:none; display:none; }
+}
+
+/* Animaciones generales */
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+@keyframes fadeUp { from{opacity:0; transform:translateY(40px);} to{opacity:1; transform:translateY(0);} }
+@keyframes glow { from{text-shadow:0 0 10px var(--color-primary);} to{text-shadow:0 0 25px var(--color-secondary),0 0 35px var(--color-primary);} }
+
+/* Responsive */
+@media(max-width:768px){
+  .menu-toggle { display:flex; }
+  nav { 
+    position:fixed; top:0; right:-250px; height:100%; flex-direction:column; background:rgba(0,0,0,0.95); padding:60px 20px; gap:20px; z-index:1000; transition:0.3s; 
+  }
+  nav.active { right:0; }
+  .close-menu { display:block; }
+}
+</style>
+</head>
+<body>
+
+<!-- Intro animada -->
+<div id="intro">
+  <img src="https://cdn.jsdelivr.net/gh/dmxyt/dmx@56977f58a2fb493b8e3c7e74fa91e2dccd89fbce/20250902_095255.png" alt="Logo DmX" class="intro-logo">
+</div>
+
+<header>
+  <a href="_blank">
+    <img src="https://cdn.jsdelivr.net/gh/dmxyt/dmx@57f0b958dc9e5fdd058b6d582c462d703bda5fa9/20250902_193240.png" alt="Logo DmX" style="height:50px;">
+    <span>Daemonix</span>
+  </a>
+  <div class="menu-toggle" id="menu-toggle"><span></span><span></span><span></span></div>
+  <nav id="nav">
+    <div class="close-menu" id="close-menu">✖</div>
+    <a href="#tienda"><img src="https://img.icons8.com/ios-filled/50/ffffff/user.png" alt="Tienda"/>Tienda</a>
+    <a href="#uso"><img src="https://img.icons8.com/ios-filled/50/ffffff/controller.png" alt="Usar"/>¿Como usar?</a>
+    <a href="#redes"><img src="https://img.icons8.com/ios-filled/50/ffffff/share.png" alt="Redes"/>Redes</a>
+  </nav>
+</header>
+
+<section id="perfil">
+  <h2>👾 Pack de juegos #1 (Inicio Epico Gamer)</h2>
+  <p>Usuario: <strong>DmX Cuenta1</strong></p>
+  <div style="display:flex; justify-content:center; gap:30px; margin-top:20px; flex-wrap:wrap;">
+    <img src="https://img.icons8.com/ios-filled/50/00ff00/xbox.png" alt="Xbox"
+  </div>
+  <h3>🎮 Juegos que contiene este usuario</h3>
+  <div class="cards-container">
+    <div class="card">
+      <img src="https://cdn.mobygames.com/covers/2423860-dead-island-definitive-edition-xbox-one-front-cover.png" alt="Dead Island Definitive Edition">
+      <h4>Dead Island Definitive Edition</h4>
+    </div>
+    <div class="card">
+      <img src="https://cdn.mobygames.com/covers/2423440-dead-island-riptide-definitive-edition-xbox-one-front-cover.png" alt="Dead Island: Riptide Definitive Edition">
+      <h4>Dead Island: Riptide Definitive Edition</h4>
+    </div>
+    <div class="card">
+      <img src="https://cdn.mobygames.com/covers/1688437-dead-island-retro-revenge-xbox-one-front-cover.png" alt="DI RE">
+      <h4>Dead Island Retro Revenge</h4>
+    </div>
+    <div class="card">
+      <img src="https://cdn.mobygames.com/covers/20035538-mortal-kombat-11-windows-apps-front-cover.png" alt="Mk11">
+      <h4>Mortal Kombat 11: Ultimate </h4>
+    </div>
+    <div class="card">
+      <img src="https://cdn.mobygames.com/covers/2455543-injustice-2-legendary-edition-windows-apps-front-cover.jpg" alt="Injustice 2">
+      <h4>Injustice 2 Leg. Edition </h4>
+      
+    </div>
+    <div class="card">
+      <img src="https://cdn.mobygames.com/covers/8430804-thief-xbox-one-front-cover.png" alt="Thief">
+      <h4>Thief </h4>
+      
+    </div>
+   precio 20$ MXN</h1>
+   <a href="/comojugarxbox.html" class="daemonix-button" target="_blank">
+    <img src="https://img.icons8.com/?size=100&id=n7nsRUSdCzkn&format=png&color=000000" alt="WhatsApp">
+    Comprar en WhatsApp 
+</a>
+</button>
+  </div>
+</section>
+
+<section id="uso">
+  <h2>🤔 Como Usar</h2>
+  <div style="display:flex; justify-content:center; gap:30px; margin-top:20px; flex-wrap:wrap;">
+    <img src="https://img.icons8.com/ios-filled/50/ff00ff/youtube-play.png" alt="YouTube"
+    <h3>Creditos a TrinoGames</h3>
+    <a href="/comojugarxbox.html" class="daemonix-button" target="_blank">
+    <img src="https://img.icons8.com/ios-filled/50/ff00ff/youtube-play.png" alt="DmX YT">
+    Ver tutorial 
+</a>
+</button>
+
+  </div>
+</section>
+
+
+<footer>
+  <img src="https://cdn.jsdelivr.net/gh/dmxyt/dmx@dcf03bc8a40748d421f85a58d6c854e43c619775/file_00000000252c61f5ae7daf652b95e881.png" alt="Logo DmX" style="height:35px;">
+  <span>© 2025 Grupo Daemonix | Todos los derechos reservados</span>
+</footer>
+
+<script>
+const toggle = document.getElementById('menu-toggle');
+const nav = document.getElementById('nav');
+const closeMenu = document.getElementById('close-menu');
+
+toggle.addEventListener('click', () => { nav.classList.add('active'); });
+closeMenu.addEventListener('click', () => { nav.classList.remove('active'); });
+
+// Cierra el menú al hacer clic en un enlace
+nav.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => { nav.classList.remove('active'); });
+});
+
+// Remueve el intro después de la animación
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const intro = document.getElementById('intro');
+    if(intro) intro.style.display = 'none';
+  }, 4500); // 2s espera + 2.5s animación
+});
+</script>
+</body>
+</html>
